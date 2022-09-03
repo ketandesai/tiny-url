@@ -3,6 +3,9 @@ A Url Shortener example, using Spring Boot and Redis.
 I created this app to learn more about Spring Boot and Redis, as
 well as basic System Design.
 
+## To Run
+`docker-compose up`
+
 ### Reference Documentation
 For further reference, please consider the following sections:
 

@@ -8,11 +8,14 @@
 # or 
 # docker-compose exec app sh
  services:
-   app:
+  backend:
      image: eclipse-temurin:17-jdk-focal
-     command: sh -c "./gradlew bootRun"
+     command: sh -c "./gradlew bootRun --debug-jvm"
      ports:
        - 8080:8080
+       - 5005:5005
+     expose:
+       - 5005
      working_dir: /app
      volumes:
        - ./:/app

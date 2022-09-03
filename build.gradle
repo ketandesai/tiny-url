@@ -25,3 +25,8 @@ dependencies {
 tasks.named('test') {
 	useJUnitPlatform()
 }
+
+//ensure Gradle passes command line arguments to the JVM:
+bootRun {
+	systemProperties = System.properties
+}
