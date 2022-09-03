@@ -1,0 +1,18 @@
+ version: "3.8"
+# to get in interactive shell to generate components
+# docker run, runs a command in a new container
+# docker run -it -v $(pwd):/app openjdk:17-alpine bash
+#
+# to run commands in a running container
+# docker exec -it <container_id> sh
+# or 
+# docker-compose exec app sh
+ services:
+   app:
+     image: eclipse-temurin:17-jdk-focal
+     command: sh -c "./gradlew bootRun"
+     ports:
+       - 8080:8080
+     working_dir: /app
+     volumes:
+       - ./:/app
