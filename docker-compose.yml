@@ -12,10 +12,10 @@
      image: eclipse-temurin:17-jdk-focal
      command: sh -c "./gradlew bootRun --debug-jvm"
      ports:
-       - 8080:8080
-       - 5005:5005
+       - "8080:8080"
+       - "5005:5005"
      expose:
-       - 5005
+       - "5005"
      working_dir: /app
      volumes:
        - ./:/app

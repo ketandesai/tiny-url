@@ -4,7 +4,7 @@ plugins {
 	id 'java'
 }
 
-group = 'com.example'
+group = 'com.tinyurl'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '17'
 
@@ -28,5 +28,6 @@ tasks.named('test') {
 
 //ensure Gradle passes command line arguments to the JVM:
 bootRun {
-	systemProperties = System.properties
+	//systemProperties = System.properties
+	jvmArgs=["-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=*:5005"]
 }
