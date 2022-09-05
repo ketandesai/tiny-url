@@ -9,14 +9,14 @@ import org.springframework.http.ResponseEntity;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class HashControllerIT {
+public class UrlControllerIT {
 
     @Autowired
     private TestRestTemplate template;
 
-    @Test
+    /*@Test
     public void getHello() throws Exception {
         ResponseEntity<String> response = template.getForEntity("/hello", String.class);
         assertThat(response.getBody()).isEqualTo("Greetings from Spring Boot!");
-    }
+    }*/
 }

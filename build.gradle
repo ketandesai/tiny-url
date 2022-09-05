@@ -15,7 +15,7 @@ repositories {
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.boot:spring-boot-starter-actuator'
-
+	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
@@ -29,5 +29,5 @@ tasks.named('test') {
 //ensure Gradle passes command line arguments to the JVM:
 bootRun {
 	//systemProperties = System.properties
-	jvmArgs=["-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=*:5005"]
+	//jvmArgs=["-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=*:5005"]
 }
