@@ -2,6 +2,8 @@ package com.tinyurl.app.service;
 
 import java.util.Date;
 
+import org.springframework.data.redis.core.HashOperations;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Base64Utils;
 
@@ -13,9 +15,13 @@ import com.tinyurl.app.repository.UrlRepository;
 public class UrlService implements UrlServiceIF {
 
     private final UrlRepository urlRepository;
+    
+    private RedisTemplate redisTemplate;
 
-    public UrlService(UrlRepository urlRepository) {
+
+    public UrlService(UrlRepository urlRepository, RedisTemplate redisTemplate) {
         this.urlRepository = urlRepository;
+        this.redisTemplate = redisTemplate;
     }
     
     
@@ -57,5 +63,11 @@ public class UrlService implements UrlServiceIF {
         return entity.getOriginalUrl();
         */
         return null;
+    }
+
+    @Override
+    public String testRedis(){
+        HashOperations hashOps = redisTemplate.opsForHash();
+        hashOps.put("user", "123-456-4334", );
     }
 }

@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.tinyurl.app.model.LongUrlRequest;
-import com.tinyurl.app.service.UrlService;
+import com.tinyurl.app.service.UrlServiceIF;
 
 
 @RestController
@@ -18,9 +18,9 @@ public class UrlController {
 
     private static final Logger logger = LoggerFactory.getLogger(UrlController.class);
     
-    UrlService urlService;
+    UrlServiceIF urlService;
 
-    public UrlController(UrlService urlService){
+    public UrlController(UrlServiceIF urlService){
         this.urlService = urlService;
     }
 
@@ -48,6 +48,11 @@ public class UrlController {
         return ResponseEntity.status(HttpStatus.FOUND)
                              .location(URI.create(longUrl))
                              .build();
+    }
+
+    @GetMapping("/testredis")
+    public String testRedis(){
+        return urlService.testRedis();
     }
 
 }

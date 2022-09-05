@@ -7,4 +7,6 @@ public interface UrlServiceIF {
     String convertToTinyUrl(LongUrlRequest request);
 
     String getOriginalUrl(String tinyUrl);
+
+    String testRedis();
 }

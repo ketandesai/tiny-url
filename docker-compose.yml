@@ -19,3 +19,9 @@
      working_dir: /app
      volumes:
        - ./:/app
+
+  db:
+    image: "redis:alpine"
+    hostname: redis
+    ports:
+      - "6379:6379"     
