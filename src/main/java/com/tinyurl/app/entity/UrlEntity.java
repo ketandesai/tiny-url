@@ -5,20 +5,22 @@ import java.util.Date;
 
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.redis.core.RedisHash;
 //import javax.persistence.*;
 
 //@Entity
+@RedisHash
 public class UrlEntity implements Serializable{
 
     private static final long serialVersionUID = 7156526077883281623L;
 
     @Id
-    //@SequenceGenerator(name = "SEQ_GEN", sequenceName = "SEQ_USER", allocationSize = 1)
-    //@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_GEN")
     private Long id;
     private String originalUrl;
     private Date startDate;
     private Date endDate;
+
+    private Integer count;
 
     public String getOriginalUrl(){
         return this.originalUrl;

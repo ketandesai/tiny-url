@@ -3,11 +3,20 @@ package com.tinyurl.app.model;
 import java.util.Date;
 
 public class LongUrlRequest {
-    
+
+    private String hashKey;
     private String originalUrl;
     private Integer count;
     private Date startDate;
     private Date endDate;
+
+    public String getHashKey() {
+        return hashKey;
+    }
+
+    public void setHashKey(String hashKey) {
+        this.hashKey = hashKey;
+    }
 
     public String getOriginalUrl(){
         return originalUrl;

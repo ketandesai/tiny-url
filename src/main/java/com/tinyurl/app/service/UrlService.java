@@ -13,17 +13,15 @@ import com.tinyurl.app.repository.UrlRepository;
 
 @Service
 public class UrlService implements UrlServiceIF {
-
-    private final UrlRepository urlRepository;
-    
     private RedisTemplate redisTemplate;
 
+    private UrlRepository urlRepository;
 
-    public UrlService(UrlRepository urlRepository, RedisTemplate redisTemplate) {
-        this.urlRepository = urlRepository;
+    public UrlService(RedisTemplate redisTemplate) {
         this.redisTemplate = redisTemplate;
+        this.urlRepository = new UrlRepository(this.redisTemplate);
     }
-    
+
     
     /**
      * Convert the long (original url) to a short url
@@ -68,6 +66,7 @@ public class UrlService implements UrlServiceIF {
     @Override
     public String testRedis(){
         HashOperations hashOps = redisTemplate.opsForHash();
-        hashOps.put("user", "123-456-4334", );
+        hashOps.put("user", "123-456-4334", "value");
+        return "connection worked";
     }
 }
