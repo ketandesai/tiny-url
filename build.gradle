@@ -17,6 +17,7 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-actuator'
 	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
 	implementation 'org.projectlombok:lombok:1.18.24'
+	implementation 'com.google.guava:guava:31.1-jre'
 	annotationProcessor 'org.projectlombok:lombok:1.18.24'
 
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
@@ -27,10 +28,4 @@ dependencies {
 
 tasks.named('test') {
 	useJUnitPlatform()
-}
-
-//ensure Gradle passes command line arguments to the JVM:
-bootRun {
-	//systemProperties = System.properties
-	//jvmArgs=["-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=*:5005"]
 }

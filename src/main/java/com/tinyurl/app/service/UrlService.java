@@ -1,28 +1,27 @@
 package com.tinyurl.app.service;
 
-import java.util.Date;
-
-import org.springframework.data.redis.core.HashOperations;
-import org.springframework.data.redis.core.RedisTemplate;
+import java.net.URI;
+import java.time.LocalDateTime;
+import java.util.Optional;
+import com.tinyurl.app.repository.URLRepository;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Base64Utils;
-
 import com.tinyurl.app.entity.UrlEntity;
 import com.tinyurl.app.model.LongUrlRequest;
-import com.tinyurl.app.repository.UrlRepository;
+import com.google.common.primitives.Longs;
 
 @Service
+@Slf4j
 public class UrlService implements UrlServiceIF {
-    private RedisTemplate redisTemplate;
+    URLRepository urlRepository;
 
-    private UrlRepository urlRepository;
-
-    public UrlService(RedisTemplate redisTemplate) {
-        this.redisTemplate = redisTemplate;
-        this.urlRepository = new UrlRepository(this.redisTemplate);
+    public UrlService(URLRepository urlRepository) {
+        this.urlRepository = urlRepository;
     }
 
-    
     /**
      * Convert the long (original url) to a short url
      * Saves the url to the database,  the converts the auto-generated
@@ -30,43 +29,40 @@ public class UrlService implements UrlServiceIF {
      */
     @Override
     public String convertToTinyUrl(LongUrlRequest request) {
-        var urlToSave = new UrlEntity();
-        urlToSave.setOriginalUrl(request.getOriginalUrl());
-        urlToSave.setEndDate(request.getEndDate());
-        urlToSave.setStartDate(new Date());
-        //var entity = urlRepository.save(urlToSave);
-
-        //String tinyUrl = Base64Utils.encodeToUrlSafeString(entity.getId());
-        //String tinyUrl = conversion.encode(entity.getId());
-        //urlToSave.setTinyUrl(tinyUrl);
-        //urlRepository.save(tinyUrl);
-        //return tinyUrl;
-        return null;
+        var urlToSave = UrlEntity.builder()
+                                           .originalUrl(request.getOriginalUrl())
+                                           .startDate(LocalDateTime.now())
+                                           .endDate(request.getEndDate())
+                                           .build();
+        urlRepository.save(urlToSave);
+        byte[] bytesId = Longs.toByteArray(urlToSave.getId());
+        String tinyUrl = Base64Utils.encodeToUrlSafeString(bytesId);
+        log.debug("converting id = {} to tinyUrl = {}", urlToSave.getId(), tinyUrl);
+        return tinyUrl;
     }
 
     /**
-     * 
+     * Get the original url from the tinyUrl hash
+     * @param tinyUrl, the tinyUrl hash
+     * @return
      */
     @Override
-    public String getOriginalUrl(String tinyUrl) {
-        /*var id = Base64Utils.decodeFromUrlSafeString(tinyUrl);
-        var entity = urlRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("There is no entity with " + tinyUrl));
-
-        if (entity.getEndDate() != null && entity.getEndDate().before(new Date())){
-            urlRepository.delete(entity);
-            throw new EntityNotFoundException("Link expired!");
+    public ResponseEntity<Void> getOriginalUrl(String tinyUrl) {
+        byte[] byteId = Base64Utils.decodeFromUrlSafeString(tinyUrl);
+        long longId = Longs.fromByteArray(byteId);
+        Optional<UrlEntity> opt = urlRepository.findById(String.valueOf(longId));
+        if (opt.isPresent()) {
+            UrlEntity entity = opt.get();
+            if (entity.getEndDate() != null && entity.getEndDate().isAfter(LocalDateTime.now())) {
+                log.debug("Link Expired: End Date is {}, is after {}", entity.getEndDate(), LocalDateTime.now());
+                urlRepository.delete(entity);
+                return ResponseEntity.status(HttpStatus.GONE).build();
+            }
+            return ResponseEntity.status(HttpStatus.FOUND)
+                                 .location(URI.create(entity.getOriginalUrl()))
+                                 .build();
         }
-
-        return entity.getOriginalUrl();
-        */
-        return null;
-    }
-
-    @Override
-    public String testRedis(){
-        HashOperations hashOps = redisTemplate.opsForHash();
-        hashOps.put("user", "123-456-4334", "value");
-        return "connection worked";
+        log.debug("Link Not Found");
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
 }

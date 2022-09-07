@@ -1,12 +1,10 @@
 package com.tinyurl.app.service;
 
 import com.tinyurl.app.model.LongUrlRequest;
+import org.springframework.http.ResponseEntity;
 
 public interface UrlServiceIF {
-    
     String convertToTinyUrl(LongUrlRequest request);
 
-    String getOriginalUrl(String tinyUrl);
-
-    String testRedis();
+    ResponseEntity<Void> getOriginalUrl(String tinyUrl);
 }
