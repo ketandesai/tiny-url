@@ -12,7 +12,11 @@ Along the way I learnt about:
 ## To Run
 To get up and running in development mode
 
-    `docker-compose up`
+    docker-compose up
+
+Go to the url to interact with the API:
+
+    http://localhost:8080/swagger-ui/index.html
 
 
 ## 💡 Motivation
