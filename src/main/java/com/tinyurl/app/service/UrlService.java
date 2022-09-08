@@ -53,8 +53,8 @@ public class UrlService implements UrlServiceIF {
         Optional<UrlEntity> opt = urlRepository.findById(String.valueOf(longId));
         if (opt.isPresent()) {
             UrlEntity entity = opt.get();
-            if (entity.getEndDate() != null && entity.getEndDate().isAfter(LocalDateTime.now())) {
-                log.debug("Link Expired: End Date is {}, is after {}", entity.getEndDate(), LocalDateTime.now());
+            if (entity.getEndDate() != null && LocalDateTime.now().isAfter(entity.getEndDate()) ) {
+                log.debug("Link Expired: Current time {} is after End Date is {}", LocalDateTime.now(), entity.getEndDate());
                 urlRepository.delete(entity);
                 return ResponseEntity.status(HttpStatus.GONE).build();
             }
