@@ -28,17 +28,20 @@ public class UrlService implements UrlServiceIF {
      * id to a base 62 number.
      */
     @Override
-    public String convertToTinyUrl(LongUrlRequest request) {
+    public ResponseEntity<?> convertToTinyUrl(LongUrlRequest request) {
+        if (request.getStartDate() == null) {
+            request.setStartDate(LocalDateTime.now());
+        }
         var urlToSave = UrlEntity.builder()
                                            .originalUrl(request.getOriginalUrl())
-                                           .startDate(LocalDateTime.now())
+                                           .startDate(request.getStartDate())
                                            .endDate(request.getEndDate())
                                            .build();
         urlRepository.save(urlToSave);
         byte[] bytesId = Longs.toByteArray(urlToSave.getId());
         String tinyUrl = Base64Utils.encodeToUrlSafeString(bytesId);
         log.debug("converting id = {} to tinyUrl = {}", urlToSave.getId(), tinyUrl);
-        return tinyUrl;
+        return ResponseEntity.ok(tinyUrl);
     }
 
     /**
@@ -58,6 +61,12 @@ public class UrlService implements UrlServiceIF {
                 urlRepository.delete(entity);
                 return ResponseEntity.status(HttpStatus.GONE).build();
             }
+            //update the count
+            if (entity.getCount() == null){
+                entity.setCount(0);
+            }
+            entity.setCount(entity.getCount() + 1);
+            urlRepository.save(entity);
             return ResponseEntity.status(HttpStatus.FOUND)
                                  .location(URI.create(entity.getOriginalUrl()))
                                  .build();

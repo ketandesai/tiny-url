@@ -1,4 +1,7 @@
  version: "3.9"
+# Runs the application in dev mode with a spring-boot container
+# and the redis db remotely in the cloud
+
 # to get in interactive shell to generate components
 # docker run, runs a command in a new container
 # docker run -it -v $(pwd):/app openjdk:17-alpine bash
@@ -10,21 +13,12 @@
  services:
   api:
      image: eclipse-temurin:17-jdk-focal
-     #command: sh -c "./gradlew bootRun --debug-jvm"
      command: sh -c "./gradlew bootRun"
-     links:
-       - "db:redis"
      ports:
        - "8080:8080"
        - "5005:5005"
      working_dir: /app
      volumes:
        - ./:/app
-  # To get an interactive terminal in usind redis-cli
-  # docker exec -it <container_name> redis-cli
-  db:
-    image: "redis:alpine"
-    container_name: redis
-    hostname: redis
-    ports:
-      - "6379:6379"     
+# To use the redis cli on the remote redis db
+# docker exec -it redis redis-cli -h <host> -p <port> -a <password>
