@@ -18,6 +18,12 @@ Go to the url to interact with the API:
 
     http://localhost:8080/swagger-ui/index.html
 
+### To Build the Image
+
+    ./gradlew bootBuildImage
+### To Run the Image
+    
+    docker run -p 8080:8080 tinyurl:0.0.0
 
 ## 💡 Motivation
 
