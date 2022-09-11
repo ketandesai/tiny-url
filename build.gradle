@@ -27,6 +27,14 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 
+// To ensure plain archive isn’t built at all,
+// disable its task as shown in the following example for the jar task
+tasks.named("jar") {
+	enabled = false
+}
+
+
+
 tasks.named('test') {
 	useJUnitPlatform()
 }
