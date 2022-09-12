@@ -1,10 +1,15 @@
 package com.tinyurl.app.service;
 
-import com.tinyurl.app.model.LongUrlRequest;
+import com.tinyurl.app.model.UrlRequest;
 import org.springframework.http.ResponseEntity;
 
 public interface UrlServiceIF {
-    ResponseEntity<?> convertToTinyUrl(LongUrlRequest request);
+    ResponseEntity<?> convertToTinyUrl(UrlRequest request);
 
-    ResponseEntity<Void> getOriginalUrl(String tinyUrl);
+    ResponseEntity<?> getOriginalUrl(String tinyUrl);
+
+    ResponseEntity<?> findAll();
+
+    ResponseEntity<?> deleteAll();
+    ResponseEntity<?> deleteById(String id);
 }

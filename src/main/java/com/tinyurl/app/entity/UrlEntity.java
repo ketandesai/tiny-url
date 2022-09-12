@@ -16,10 +16,7 @@ public class UrlEntity{
     private Long id;
 
     private String originalUrl;
-
     private LocalDateTime startDate;
-
     private LocalDateTime endDate;
-
     private Integer count;
 }

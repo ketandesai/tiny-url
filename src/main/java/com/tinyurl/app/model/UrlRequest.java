@@ -1,12 +1,12 @@
 package com.tinyurl.app.model;
 
 import lombok.Data;
+
 import java.time.LocalDateTime;
 
 @Data
-public class LongUrlRequest {
+public class UrlRequest {
     private String originalUrl;
-    private Integer count;
     private LocalDateTime startDate;
     private LocalDateTime endDate;
 }

@@ -21,8 +21,9 @@
      working_dir: /app
      volumes:
        - ./:/app
-  # To get an interactive terminal in usind redis-cli
-  # docker exec -it <container_name> redis-cli
+  # To get an interactive terminal in using redis-cli
+  # docker exec -it <container_name> redis-cli or
+  # docker run -it redis redis-cli -h <host> -p <port> -a <password>
   db:
     image: "redis:alpine"
     container_name: redis
